@@ -1,140 +1,146 @@
-🩺 Decoding Acne – Automated Facial Acne Detection
+# 🩺 Decoding Acne–Automated Facial Acne Detection
 
 A Deep Learning–based web application that detects and classifies different types of facial acne using a trained YOLO model.
 
-🚀 Live Demo:
-https://huggingface.co/spaces/Nikhita070707/acne
+🚀 **Live Demo:**  
+👉 https://huggingface.co/spaces/Nikhita070707/acne
+<img width="1012" height="460" alt="image" src="https://github.com/user-attachments/assets/19750cf8-aac1-488b-b248-59d22847c005" />
 
-📌 Project Overview
+---
 
-Decoding Acne is an AI-powered skin analysis system that:
+## 📌 Project Overview
 
-Detects acne regions in facial images
+**Decoding Acne** is a skin analysis system that:
 
-Classifies acne types
+- Detects acne regions in facial images  
+- Classifies acne types  
+- Counts occurrences of each type  
+- Displays bounding boxes visually  
+- Provides acne type summaries  
 
-Counts occurrences of each type
+This project combines **Computer Vision, Deep Learning, and Web Deployment** using Docker on Hugging Face Spaces.
 
-Displays bounding boxes visually
+---
 
-Provides acne type summaries
+## 🧠 Model Details
 
-This project combines Computer Vision, Deep Learning, and Web Deployment using Docker on Hugging Face Spaces.
+- **Model:** YOLO (Ultralytics)  
+- **Framework:** PyTorch  
+- **Custom trained acne detection dataset**  
+- **Model file:** `backend/model/best.pt`
 
-📸 Application Preview
-Upload Interface
+### 🔍 Detection Classes
 
-(Add this image inside an assets folder and rename it as upload.png)
+- Blackheads  
+- Whiteheads  
+- Papules  
+- Pustules  
+- Nodules  
+- Dark Spots  
 
-![Upload Screen](assets/upload.png)
-Detection Output
+---
 
-(Add detection result screenshot as result.png)
-
-![Detection Result](assets/result.png)
-🧠 Model Details
-
-Model: YOLO (Ultralytics)
-
-Framework: PyTorch
-
-Custom trained acne detection dataset
-
-Model file: backend/model/best.pt
-
-Detection Classes
-
-Blackheads
-
-Whiteheads
-
-Papules
-
-Pustules
-
-Nodules
-
-Dark Spots
-
-🏗 Project Structure
-.
-├── backend/
-│   ├── model/
-│   │   └── best.pt
-│   ├── uploads/
-│   │   └── .gitkeep
-│   └── app.py
-│
-├── frontend/
-│   └── index.html
-│
-├── Dockerfile
-├── requirements.txt
+## 🏗 Project Structure
+├── backend/  
+│ ├── model/  
+│ │ └── best.pt  
+│ ├── uploads/  
+│ │ └── .gitkeep  
+│ └── app.py  
+│  
+├── frontend/  
+│ └── index.html  
+│  
+├── Dockerfile  
+├── requirements.txt  
 └── README.md
-⚙ How It Works
 
-User uploads facial image.
+---
 
-Image is sent to /predict API.
+## ⚙️ How It Works
 
-Backend:
+1. User uploads a facial image.
+2. Image is sent to the `/predict` API endpoint.
+3. Backend:
+   - Saves image temporarily  
+   - Runs YOLO inference  
+   - Extracts bounding boxes  
+   - Counts acne types  
+4. Frontend:
+   - Displays bounding boxes  
+   - Shows acne summary cards  
 
-Saves image temporarily
+---
 
-Runs YOLO inference
+## 🐳 Deploy on Hugging Face Spaces (Docker)
 
-Extracts bounding boxes
+### Step 1: Create Space
 
-Counts acne types
+1. Go to **Hugging Face**
+2. Click **Create New Space**
+3. Choose:
+   - **SDK:** Docker  
+   - **Visibility:** Public or Private  
 
-Frontend:
+---
 
-Displays bounding boxes
+### Step 2: Upload Files
 
-Shows acne summary cards
+Upload the following files and folders:
 
-🐳 Deployment – Hugging Face Spaces (Docker)
-Create Space
+- `backend/`
+- `frontend/`
+- `Dockerfile`
+- `requirements.txt`
+- `README.md`
 
-Choose Docker SDK
+---
 
-Ensure port is 7860
+### Step 3: Required Configuration
 
-Important Configuration
+In `Dockerfile`, make sure you expose port 7860:
 
-In app.py:
-
-app.run(host="0.0.0.0", port=7860)
-
-In Dockerfile:
-
+```dockerfile
 EXPOSE 7860
-🖥 Run Locally
+```
 
-Install dependencies:
+## 🧪 Run Locally
 
-pip install -r requirements.txt
+### 1️⃣ Install Dependencies
 
-Run application:
+pip install \-r requirements.txt
+
+### 2️⃣ Run Backend Server
 
 python backend/app.py
 
-Open in browser:
+### 3️⃣ Open in Browser
 
 http://localhost:7860
-🔮 Future Improvements
 
-Acne severity grading
+---
 
-Personalized skincare suggestions
+## ⚠ Notes
 
-Mobile optimization
+- The `uploads/` folder stores temporary images.
+- Hugging Face file system is temporary (ephemeral).
+- Uploaded images are not permanently stored.
+- The model file must remain under **100MB** for GitHub compatibility.
 
-Faster inference optimization
+---
 
-Dermatology dataset expansion
+## 🔮 Future Improvements
 
-⚠ Disclaimer
+- Acne severity grading system  
+- Treatment recommendations module  
+- Model optimization for faster inference  
+- UI enhancement  
+- Mobile-friendly version  
 
-This application is developed for educational and research purposes only.
-It does not replace professional dermatological advice.
+---
+
+## ⚠ Disclaimer
+
+This tool is intended for **educational and research purposes only**.  
+It does not provide medical diagnosis or treatment advice.  
+Consult a certified dermatologist for professional medical guidance.
