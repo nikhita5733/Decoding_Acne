@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Decoding Acne: Automated Facial Acne Type Detection</title>
+
+<style>
+body{
+    margin:0;
+    font-family:"Segoe UI", sans-serif;
+    background:#f5f0e8;
+}
+.container{
+    width:90%;
+    max-width:1000px;
+    margin:40px auto;
+    background:white;
+    border-radius:15px;
+    padding:30px;
+    box-shadow:0 0 15px rgba(0,0,0,0.1);
+}
+header{text-align:center;}
+header img{width:120px;margin-bottom:10px;}
+h1{color:#7a5c3c;margin-bottom:5px;}
+header p{color:#666;margin-top:0;}
+.upload-box{
+    margin:30px 0;
+    text-align:center;
+    padding:25px;
+    border:2px dashed #d8cfc4;
+    border-radius:12px;
+    background:#faf7f2;
+}
+button{
+    margin-top:15px;
+    background:#c4a484;
+    color:white;
+    border:none;
+    padding:12px 25px;
+    border-radius:25px;
+    font-size:16px;
+    cursor:pointer;
+}
+button:hover{background:#b39475;}
+canvas{
+    width:100%;
+    margin-top:20px;
+    border-radius:12px;
+}
+/* -------- Summary Cards -------- */
+.card{
+    background:#faf7f2;
+    padding:15px;
+    border-radius:12px;
+    margin-bottom:15px;
+    border-left:8px solid #c4a484;
+}
+.card b{
+    font-size:16px;
+}
+/* -------- Legend -------- */
+.legend{
+    margin-top:25px;
+}
+.legend-items{
+    display:flex;
+    flex-wrap:wrap;
+    gap:15px;
+}
+.legend-item{
+    display:flex;
+    align-items:center;
+    font-size:14px;
+}
+.legend-color{
+    width:14px;
+    height:14px;
+    margin-right:6px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+    <img src="https://cdn-icons-png.flaticon.com/512/4320/4320337.png">
+    <h1>Decoding Acne</h1>
+    <p>Upload your face image to analyze skin condition</p>
+</header>
+
+<div class="upload-box">
+    <input type="file" id="img"><br><br>
+    <button onclick="detect()">Analyze Skin</button>
+</div>
+
+<canvas id="canvas"></canvas>
+
+<div id="summary"></div>
+
+<!-- -------- Legend -------- -->
+<div class="legend">
+    <h3>Legend</h3>
+    <div class="legend-items">
+        <div class="legend-item"><div class="legend-color" style="background:red"></div>blackheads</div>
+        <div class="legend-item"><div class="legend-color" style="background:cyan"></div>dark spot</div>
+        <div class="legend-item"><div class="legend-color" style="background:purple"></div>nodules</div>
+        <div class="legend-item"><div class="legend-color" style="background:green"></div>papules</div>
+        <div class="legend-item"><div class="legend-color" style="background:blue"></div>pustules</div>
+        <div class="legend-item"><div class="legend-color" style="background:magenta"></div>whiteheads</div>
+    </div>
+</div>
+
+</div>
+
+<script>
+const COLORS={
+  "blackheads":"red",
+  "dark spot":"cyan",
+  "nodules":"purple",
+  "papules":"green",
+  "pustules":"blue",
+  "whiteheads":"magenta"
+};
+function detect(){
+    const f=document.getElementById("img").files[0];
+    if(!f) return alert("Select image");
+    const fd=new FormData();
+    fd.append("image",f);
+    fetch("/predict",{method:"POST",body:fd})
+    .then(r=>r.json())
+    .then(d=>draw(f,d));
+}
+function draw(file,data){
+    const c=document.getElementById("canvas");
+    const ctx=c.getContext("2d");
+    const img=new Image();
+    img.onload=()=>{
+        c.width=img.width;
+        c.height=img.height;
+        ctx.drawImage(img,0,0);
+        data.detections.forEach(x=>{
+            const [a,b,c2,d]=x.bbox;
+            ctx.strokeStyle=COLORS[x.label];
+            ctx.lineWidth=2;
+            ctx.strokeRect(a,b,c2-a,d-b);
+            ctx.fillStyle=COLORS[x.label];
+            ctx.fillText(x.label,a,b-5);
+        });
+        showSummary(data.counts);
+    };
+    img.src=URL.createObjectURL(file);
+}
+function showSummary(counts){
+    let html="<h3>Acne Count Summary</h3>";
+    for(let k in counts){
+        const color = COLORS[k] || "#c4a484";
+        html += `
+        <div class="card" style="border-left-color:${color}">
+            <b style="color:${color}">${k}</b><br>
+            <strong>Count:</strong> ${counts[k].count}<br>
+            ${counts[k].description}
+        </div>`;
+    }
+    document.getElementById("summary").innerHTML = html;
+}
+</script>
+
+</body>
+</html>
