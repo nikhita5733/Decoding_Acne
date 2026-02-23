@@ -4,7 +4,7 @@ A Deep Learning–based web application that detects and classifies different ty
 
 🚀 **Live Demo:**  
 👉 https://huggingface.co/spaces/Nikhita070707/acne
-<img width="1012" height="460" alt="image" src="https://github.com/user-attachments/assets/19750cf8-aac1-488b-b248-59d22847c005" />
+<img width="866" height="857" alt="image" src="https://github.com/user-attachments/assets/2a4b0b7b-38af-4dea-9baf-9215fc8bb505" />
 
 ---
 
@@ -16,7 +16,8 @@ A Deep Learning–based web application that detects and classifies different ty
 - Classifies acne types  
 - Counts occurrences of each type  
 - Displays bounding boxes visually  
-- Provides acne type summaries  
+- Provides acne type summaries
+- Displays overall acne severity analysis: No, Low, Moderate, High, based on number of acne.
 
 This project combines **Computer Vision, Deep Learning, and Web Deployment** using Docker on Hugging Face Spaces.
 
@@ -37,6 +38,15 @@ This project combines **Computer Vision, Deep Learning, and Web Deployment** usi
 - Pustules  
 - Nodules  
 - Dark Spots  
+
+---
+
+## How to Use
+
+1. Click **Choose File** to upload your facial image.
+2. Click **Analyze Skin**.
+3. Wait for the AI to detect acne (loading indicator will show).
+4. Review the results on the canvas and summary section below.
 
 ---
 
@@ -68,7 +78,8 @@ This project combines **Computer Vision, Deep Learning, and Web Deployment** usi
    - Counts acne types  
 4. Frontend:
    - Displays bounding boxes  
-   - Shows acne summary cards  
+   - Shows acne summary cards
+   - Shows acne severity analysis: No, Low, Moderate or High
 
 ---
 
