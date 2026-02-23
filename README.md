@@ -106,18 +106,48 @@ EXPOSE 7860
 
 ## 🧪 Run Locally
 
-### 1️⃣ Install Dependencies
+### 1️⃣ Clone the Repository
 
-pip install \-r requirements.txt
+```bash
+git clone https://github.com/nikhita5733/Decoding_Acne.git
+cd Decoding_Acne
+```
 
-### 2️⃣ Run Backend Server
+### 2️⃣ Create Virtual Environment
 
+```bash
+python -m venv venv
+```
+▶ Activate Virtual Environment
+
+### For Windows (Command Prompt):
+```bash
+venv\Scripts\activate
+```
+### For Git Bash:
+```bash
+source venv/Scripts/activate
+```
+### For Mac/Linux:
+```bash
+source venv/bin/activate
+```
+You should see (venv) appear in your terminal.
+
+### 3️⃣ Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 4️⃣ Run Backend Server
+```bash
 python backend/app.py
-
-### 3️⃣ Open in Browser
-
+```
+### 5️⃣ Open in Browser
+```bash
 http://localhost:7860
-
+```
 ---
 
 ## ⚠ Notes
@@ -125,7 +155,6 @@ http://localhost:7860
 - The `uploads/` folder stores temporary images.
 - Hugging Face file system is temporary (ephemeral).
 - Uploaded images are not permanently stored.
-- The model file must remain under **100MB** for GitHub compatibility.
 
 ---
 
