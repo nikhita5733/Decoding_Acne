@@ -1,9 +1,9 @@
-# 🩺 Decoding Acne–Automated Facial Acne Detection
+# 🩺 Decoding Acne-Automated Facial Acne Detection
 
 A Deep Learning–based web application that detects and classifies different types of facial acne using a trained YOLO model.
 
 🚀 **Live Demo:**  
-👉 https://huggingface.co/spaces/Nikhita070707/acne
+👉 https://huggingface.co/spaces/Nikhita070707/testing_acne_detector
 <img width="866" height="857" alt="image" src="https://github.com/user-attachments/assets/2a4b0b7b-38af-4dea-9baf-9215fc8bb505" />
 
 ---
