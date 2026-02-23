@@ -170,8 +170,7 @@ http://localhost:7860
 ---
 
 ## 🔮 Future Improvements
-
-- Acne severity grading system  
+  
 - Treatment recommendations module  
 - Model optimization for faster inference  
 - UI enhancement  
