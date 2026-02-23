@@ -1,65 +1,97 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Decoding Acne: Automated Facial Acne Type Detection</title>
+<title>Decoding Acne | AI Skin Analyzer</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
 body{
     margin:0;
-    font-family:"Segoe UI", sans-serif;
-    background:#f5f0e8;
+    font-family:'Poppins', sans-serif;
+    background:linear-gradient(135deg,#f8f4ef,#fdeeea);
 }
 .container{
-    width:90%;
+    width:92%;
     max-width:1000px;
     margin:40px auto;
     background:white;
-    border-radius:15px;
-    padding:30px;
-    box-shadow:0 0 15px rgba(0,0,0,0.1);
+    border-radius:25px;
+    padding:40px;
+    box-shadow:0 20px 60px rgba(0,0,0,0.08);
 }
-header{text-align:center;}
-header img{width:120px;margin-bottom:10px;}
-h1{color:#7a5c3c;margin-bottom:5px;}
-header p{color:#666;margin-top:0;}
+header{text-align:center;margin-bottom:30px;}
+header img{width:90px;}
+h1{margin:10px 0 5px;color:#6b4f3b;font-weight:700;}
+header p{color:#777;font-size:14px;}
 .upload-box{
-    margin:30px 0;
     text-align:center;
-    padding:25px;
-    border:2px dashed #d8cfc4;
-    border-radius:12px;
-    background:#faf7f2;
+    padding:30px;
+    border:2px dashed #e6d8cc;
+    border-radius:18px;
+    background:#fbf7f3;
 }
 button{
     margin-top:15px;
-    background:#c4a484;
+    background:linear-gradient(135deg,#c4a484,#a88563);
     color:white;
     border:none;
-    padding:12px 25px;
-    border-radius:25px;
-    font-size:16px;
+    padding:12px 30px;
+    border-radius:30px;
+    font-size:15px;
+    font-weight:600;
     cursor:pointer;
+    transition:0.3s;
 }
-button:hover{background:#b39475;}
+button:hover{
+    transform:scale(1.05);
+    box-shadow:0 10px 25px rgba(0,0,0,0.15);
+}
+#loading{
+    display:none;
+    text-align:center;
+    margin-top:25px;
+    font-weight:600;
+    color:#6b4f3b;
+}
 canvas{
     width:100%;
-    margin-top:20px;
-    border-radius:12px;
+    margin-top:30px;
+    border-radius:18px;
+    box-shadow:0 10px 40px rgba(0,0,0,0.1);
 }
-/* -------- Summary Cards -------- */
+.summary{margin-top:35px;}
+.severity-box{
+    padding:18px;
+    border-radius:15px;
+    font-weight:700;
+    text-align:center;
+    margin-bottom:20px;
+    font-size:18px;
+}
+.low{background:#e8f9e8;color:#207520;}
+.moderate{background:#fff6d6;color:#a67c00;}
+.high{background:#ffe5e5;color:#b30000;}
+.no-acne{background:#e6f7ff;color:#005c99;}
+.warning-box{
+    margin-top:15px;
+    padding:15px;
+    border-radius:12px;
+    background:#fff0f0;
+    color:#a30000;
+    font-weight:600;
+    text-align:center;
+}
 .card{
-    background:#faf7f2;
+    background:#fbf7f3;
     padding:15px;
     border-radius:12px;
     margin-bottom:15px;
-    border-left:8px solid #c4a484;
+    border-left:6px solid #c4a484;
 }
-.card b{
-    font-size:16px;
-}
-/* -------- Legend -------- */
+/* Legend */
 .legend{
-    margin-top:25px;
+    margin-top:30px;
 }
 .legend-items{
     display:flex;
@@ -72,9 +104,10 @@ canvas{
     font-size:14px;
 }
 .legend-color{
-    width:14px;
-    height:14px;
+    width:15px;
+    height:15px;
     margin-right:6px;
+    border-radius:3px;
 }
 </style>
 </head>
@@ -86,28 +119,30 @@ canvas{
 <header>
     <img src="https://cdn-icons-png.flaticon.com/512/4320/4320337.png">
     <h1>Decoding Acne</h1>
-    <p>Upload your face image to analyze skin condition</p>
+    <p>AI-Powered Facial Acne Detection & Severity Analysis</p>
 </header>
 
 <div class="upload-box">
-    <input type="file" id="img"><br><br>
+    <input type="file" id="img"><br>
     <button onclick="detect()">Analyze Skin</button>
 </div>
 
+<div id="loading">Analyzing Skin... Please wait ⏳</div>
+
 <canvas id="canvas"></canvas>
 
-<div id="summary"></div>
+<div class="summary" id="summary"></div>
 
-<!-- -------- Legend -------- -->
+<!-- Legend -->
 <div class="legend">
-    <h3>Legend</h3>
+    <h3>Detection Legend</h3>
     <div class="legend-items">
-        <div class="legend-item"><div class="legend-color" style="background:red"></div>blackheads</div>
-        <div class="legend-item"><div class="legend-color" style="background:cyan"></div>dark spot</div>
-        <div class="legend-item"><div class="legend-color" style="background:purple"></div>nodules</div>
-        <div class="legend-item"><div class="legend-color" style="background:green"></div>papules</div>
-        <div class="legend-item"><div class="legend-color" style="background:blue"></div>pustules</div>
-        <div class="legend-item"><div class="legend-color" style="background:magenta"></div>whiteheads</div>
+        <div class="legend-item"><div class="legend-color" style="background:red"></div>Blackheads</div>
+        <div class="legend-item"><div class="legend-color" style="background:cyan"></div>Dark Spots</div>
+        <div class="legend-item"><div class="legend-color" style="background:purple"></div>Nodules</div>
+        <div class="legend-item"><div class="legend-color" style="background:green"></div>Papules</div>
+        <div class="legend-item"><div class="legend-color" style="background:blue"></div>Pustules</div>
+        <div class="legend-item"><div class="legend-color" style="background:magenta"></div>Whiteheads</div>
     </div>
 </div>
 
@@ -125,11 +160,15 @@ const COLORS={
 function detect(){
     const f=document.getElementById("img").files[0];
     if(!f) return alert("Select image");
+    document.getElementById("loading").style.display="block";
     const fd=new FormData();
     fd.append("image",f);
     fetch("/predict",{method:"POST",body:fd})
     .then(r=>r.json())
-    .then(d=>draw(f,d));
+    .then(d=>{
+        draw(f,d);
+        document.getElementById("loading").style.display="none";
+    });
 }
 function draw(file,data){
     const c=document.getElementById("canvas");
@@ -152,17 +191,57 @@ function draw(file,data){
     img.src=URL.createObjectURL(file);
 }
 function showSummary(counts){
-    let html="<h3>Acne Count Summary</h3>";
+    let total=0;
     for(let k in counts){
-        const color = COLORS[k] || "#c4a484";
+        total+=counts[k].count;
+    }
+    let html="<h3>Acne Analysis Summary</h3>";
+    /* No Acne Case */
+    if(total === 0){
         html += `
+        <div class="severity-box no-acne">
+            ✅ No Acne Detected — Your skin appears clear!
+        </div>`;
+        document.getElementById("summary").innerHTML=html;
+        return;
+    }
+    /* Updated Severity Logic */
+    let severityClass="";
+    let severityText="";
+    if(total >= 1 && total <= 18){
+        severityClass="low";
+        severityText="Low";
+    }
+    else if(total >= 19 && total <= 30){
+        severityClass="moderate";
+        severityText="Moderate";
+    }
+    else if(total >= 31){
+        severityClass="high";
+        severityText="High";
+    }
+    html += `
+    <div class="severity-box ${severityClass}">
+        Overall Acne Severity: ${severityText}
+    </div>`;
+    /* Doctor Consultation Warning */
+    if(severityText==="High"){
+        html += `
+        <div class="warning-box">
+            ⚠ High acne severity detected. Please consult a certified dermatologist for professional medical advice.
+        </div>`;
+    }
+    /* Display Counts */
+    for(let k in counts){
+        const color=COLORS[k] || "#c4a484";
+        html+=`
         <div class="card" style="border-left-color:${color}">
             <b style="color:${color}">${k}</b><br>
-            <strong>Count:</strong> ${counts[k].count}<br>
+            Count: ${counts[k].count}<br>
             ${counts[k].description}
         </div>`;
     }
-    document.getElementById("summary").innerHTML = html;
+    document.getElementById("summary").innerHTML=html;
 }
 </script>
 
